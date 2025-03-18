@@ -1,0 +1,217 @@
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Swiper CSS 및 JS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+ #instar_wrapper{
+ width:100%;
+ padding-top:100px;
+ padding-bottom:100px;
+ background:#f7f7f7;
+ }
+ .instar_inner{
+  width:100%;
+ max-width:1600px;
+ margin:0 auto;  
+ }
+  /* 기본 레이아웃 */
+  #instar_wrapper .instagram-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  #instar_wrapper .instagram_item {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    height:390px;
+  }
+  #instar_wrapper .instagram_item img{
+      width: 100%;
+      display: block;
+      border-radius: 3px;
+  }
+  #instar_wrapper .instagram_item video {
+    width: 100%;
+    display: block;
+    border-radius: 3px;
+  }
+  /* 여러 장 아이콘 표시 (carousel_album) */
+  #instar_wrapper .multi-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #fff;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    z-index: 10;
+  }
+  /* 더보기 버튼 */
+  #loadMoreBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #919191; 
+      background-color: #fff; 
+      border:1px solid #bdbdbd;
+  }
+  /* 모달 팝업 */
+  #modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000000000000;
+    justify-content: center;
+    align-items: center;
+  }
+  #modal .modal-content {
+    position: relative;
+    max-width: 55%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+  #modal .modal-content img,
+  #modal .modal-content video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+  }
+  #modal .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 120px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    background:none;
+    z-index: 1100;
+    text-align:right;
+  }
+  /* 모달 내부 Swiper */
+  #instar_wrapper .swiper-container {
+    width: 100%;
+    height: auto;
+  }
+  #instar_wrapper .swiper-slide img,
+  #instar_wrapper .swiper-slide video {
+    width: 100%;
+    display: block;
+    border-radius: 3px;
+  }
+  #instar_wrapper .swiper-button-next, .swiper-button-prev {
+      font-weight:600;
+    color: #fff!important;
+
+  }
+
+  #instar_wrapper .swiper-button-next_instar_2, .swiper-button-prev_instar_2 {
+    color: #fff;
+  }
+  #instar_wrapper .swiper-button-next:after, .swiper-button-prev:after{color:#fff;}
+
+  #instar_wrapper .swiper-pagination-bullet {
+    background: #fff;
+  }
+  #modal .nested-swiper{position:relative;width:420px;overflow:hidden;}
+  #modal .modal-content img, #modal .modal-content video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 3px;
+      width: 420px;
+      margin: 0 auto;
+  }
+  #instar_wrapper .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100dvh;
+  }
+
+  #instar_wrapper .p_n_button_wrapper {
+      position: fixed;
+      top: 62%;
+      transform: translate(-50%, -50%);
+      width: 77px;
+      background-color: rgba(0, 0, 0, .5);
+      border-radius: 10px;
+      z-index: 999;
+      padding-top: 4px;
+      padding-bottom: 3px;
+      font-size: 12px;
+      margin-top: 100px;
+      margin-left: 360px;
+  }
+  #instar_wrapper .custom-pagination {color:#fff;z-index:1;position:absolute;bottom:3px;}
+  #instar_wrapper .swiper-button-next_instar_2{z-index:10;position:relative;float:right;padding-right:10px;cursor:pointer;}
+  #instar_wrapper .swiper-button-prev_instar_2{z-index:10;position:relative;float:left;padding-left:10px;cursor:pointer;}
+
+  /*텍스트 부분*/
+  .caption {
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
+    text-align: center;
+    padding: 0 5px;
+    display:none;
+   
+  }
+
+  #instar_wrapper .slide-content {
+    display: flex;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    background:#fff;
+  }
+  #instar_wrapper .slide-image, .slide-caption {
+      width: 475px;
+      box-sizing: border-box;
+      padding: 10px;
+      background:#fff;
+  }
+  #instar_wrapper .all-posts-swiper .slide-caption{
+      width: 475px;
+      box-sizing: border-box;
+      padding: 10px;
+      background:#fff;
+      height:525px;
+  }
+  #instar_wrapper .slide-caption p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  /*yogibo 로고 부분*/
+  #instar_wrapper .senter-section{
+      padding-top:5px;padding-bottom:10px;border-bottom:1px solid #ddd;height: 30px;font-weight: 600
+  }
+  #instar_wrapper .logo_button{
+      border:1px solid #ddd;
+      width:32px;
+      height:32px;
+      display:inline-block;
+      overflow:hidden;
+      border-radius:50%;
+      float:left;
+  }
+  #instar_wrapper .tab_logo{
+      font-size:13px;line-height:30px;display:inline-block;float:left;margin-left:17px;font-weight:600;
+  }
+
+  .title_instar{text-align:center;}
+  .title_instar ul li:nth-child(1){font-size:80px;color:#00bdd4;font-weight:600;}
+  .title_instar ul li:nth-child(2){font-size:22px;color:#898989;font-weight:400;margin-top:5px;}
+
+
+</style>
